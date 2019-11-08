@@ -2,98 +2,100 @@ import axios from "axios";
 
 const urlGit = 'https://api.github.com';
 const clientID = 'd2c8e4060ad563b6f776';
-const clientSecret = '9df95a9a5b1812baa60ac306df8039835a8cd738';
+const clientSecret = 'f75fe2a775dc6dfc67a4e09568413c7095f80fbc';
 
 export default {
 
-    login: (requestToken) => {
+    login: (code) => {
         return new Promise((resolve, reject) => {
-            axios({
-                method: 'post',
-                url: `${urlGit}/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}`,
-                headers: {
-                    accept: 'application/json'
-                }
-            }).then((response) => {
-                resolve(response.data);
-            }).catch(error => {
-                reject(error.message)
+            axios.post(`https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${code}`)
+                .then((response) => {
+                    resolve(response.data);
+                }).catch(error => {
+                reject(error)
             });
         })
     },
 
-    listUsers: (requestToken) => {
+    listUsers: () => {
         return new Promise((resolve, reject) => {
             axios.get(`${urlGit}/users`, {
                 headers: {
-                    'Accept': 'application/json',
-                    'Authorization': requestToken
+                    'Accept'        : 'application/json',
+                    'Authorization' : 'bearer 43290e07eb870713b0273d123a872c34e9203e9b'
                 }
-            }).then(response => {
-                resolve(response.data);
-            }).catch(error => {
+            })
+                .then(response => {
+                    resolve(response.data);
+                }).catch(error => {
                 reject(error)
             });
         })
     },
 
-    getUser: (requestToken) => {
+    getUser: () => {
         return new Promise((resolve, reject) => {
             axios.get(`${urlGit}/user`, {
                 headers: {
-                    'Accept': 'application/json',
-                    'Authorization': requestToken
+                    'Accept'        : 'application/json',
+                    'Authorization' : 'bearer 43290e07eb870713b0273d123a872c34e9203e9b'
                 }
-            }).then(response => {
-                resolve(response.data);
-            }).catch(error => {
+            })
+                .then(response => {
+                    resolve(response.data);
+                }).catch(error => {
                 reject(error)
             });
         })
     },
 
-    getUserByName: (requestToken, name) => {
+    getUserByName: (user) => {
         return new Promise((resolve, reject) => {
-            axios.get(`${urlGit}/users/${name}`, {
+            axios.get(`${urlGit}/users/${user}`, {
                 headers: {
-                    'Accept': 'application/json',
-                    'Authorization': requestToken
+                    'Accept'        : 'application/json',
+                    'Authorization' : 'bearer 43290e07eb870713b0273d123a872c34e9203e9b'
                 }
-            }).then(response => {
-                resolve(response.data);
-            }).catch(error => {
+            })
+                .then(response => {
+                    resolve(response.data);
+                }).catch(error => {
                 reject(error)
             });
         })
     },
 
-    getUserRepos: (requestToken, owner) => {
+    getUserRepos: (user) => {
         return new Promise((resolve, reject) => {
-            axios.get(`${urlGit}/users/${owner}/repos`, {
+            axios.get(`${urlGit}/users/${user}/repos`, {
                 headers: {
-                    'Accept': 'application/json',
-                    'Authorization': requestToken
+                    'Accept'        : 'application/json',
+                    'Authorization' : 'bearer 43290e07eb870713b0273d123a872c34e9203e9b'
                 }
-            }).then(response => {
-                resolve(response.data);
-            }).catch(error => {
-                reject(error.message)
+            })
+                .then(response => {
+                    resolve(response.data);
+                }).catch(error => {
+                reject(error)
             });
         })
     },
 
-    getUserReposLanguage: (requestToken, owner, repos) => {
+    getUserReposLanguage: (user, repos) => {
         return new Promise((resolve, reject) => {
-            axios.get(`${urlGit}/repos/${owner}/${repos}/language`, {
+            axios.get(`${urlGit}/repos/${user}/${repos}/languages`, {
                 headers: {
-                    'Accept': 'application/json',
-                    'Authorization': requestToken
+                    'Accept'        : 'application/json',
+                    'Authorization' : 'bearer 43290e07eb870713b0273d123a872c34e9203e9b'
                 }
-            }).then(response => {
-                resolve(response.data);
-            }).catch(error => {
-                reject(error.message)
+            })
+                .then(response => {
+                    resolve(response.data);
+                }).catch(error => {
+
+                    console.log(error)
+                reject(error)
             });
         })
-    }
+    },
 };
